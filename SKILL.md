@@ -1,6 +1,7 @@
 ---
 name: security-baseline
 description: 个人/小团队 AI 工作的安全基线与凭证治理横切技能，跨所有业务项目与两台 Mac 全局生效，是和 project-manager 平级的全局治理能力。覆盖：①凭证分级与"到底存哪里"决策——人脑只记一个主口令、密码管理器管网站/App 密码、加密 .enc 管开发者 token/密钥、macOS 钥匙串与 SSH agent 分工；②人因密码管理——记忆力不好时如何只记一句"够长又顺口"的主口令（Diceware/中文口令短语、强度与词数、离线备份、更换路线、密码管理器选型 Bitwarden/KeePassXC/iCloud 钥匙串）；③公开仓防泄漏分层防御（明文不入库、.gitignore/.enc、pre-commit gitleaks、GitHub push protection、误提交与泄漏应急响应=先轮换再清历史、交付前安全检查清单、对外打码脱敏、最小权限）；④网络与 VPN/代理的安全使用与 Agent 操作指针。当用户提到"密码怎么存/记不住密码/主密码/主口令/passphrase、API key/token/secret/私钥/凭证放哪、密码管理器/1Password/Bitwarden/KeePass/钥匙串、这个能不能提交 git/公开仓、.env/.enc/密钥泄漏/误提交、token 轮换、脱敏打码、最小权限、交付前安全检查、VPN/代理能不能用、外网访问安全、安全基线/安全规范"等任何安全与凭证相关需求时使用。纯方法论与规范，不含可执行脚本：加解密/明文巡检复用 mac-system-toolkit，双机具体凭证台账在 dual-machine-manager。
+compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因此 Windows/macOS/Linux 三平台通用、无需 uname 判平台、无平台适配缺口；正文示例命令（secrets、~/.doubao/secrets、代理端口）以 macOS 双机现状为例，实际加解密/巡检/代理动作由 mac-system-toolkit 等工具技能按其各自的平台标注落地。
 ---
 
 # security-baseline · 安全基线与凭证治理
