@@ -69,7 +69,7 @@ ENC_PASS="${ENC_PASS:?需要用户当次提供主口令}" \
 流水线无法交互、又必须自动解密时，才使用本机主密码文件——这是"自动化可用"与"不把主口令写进仓库"之间的标准折中：
 
 - 固定路径 `~/.doubao/secrets/master.pass`（一行，`chmod 600`，目录 700，**在所有仓库之外、永不入库**）；
-- 脚本三级回退：已 export 的 `ENC_PASS` > `master.pass` > 交互输入，全缺则报错退出（参考实现见 mac-system-toolkit `secret-encryption.md`）；
+- 脚本三级回退：已 export 的 `ENC_PASS` > `master.pass` > 交互输入，全缺则报错退出（参考实现属 mac-system-toolkit 加解密能力）；
 - 建立方式：`umask 077; printf '%s' '<主口令>' > ~/.doubao/secrets/master.pass && chmod 600 ~/.doubao/secrets/master.pass`，由用户本人或经用户当次授权建立；
 - 它是本机当前用户可读的明文文件（主口令无法再加密自身），因此**仅限可信本机**，不进 git、不进云盘同步目录、不跨机明文拷贝；新机器线下重建。
 - 是否启用由用户决定；用户没要求无人值守时，默认走第三节的交互方式，不主动创建 master.pass。
@@ -85,6 +85,6 @@ ENC_PASS="${ENC_PASS:?需要用户当次提供主口令}" \
 
 ## 七、来源与延伸
 
-- 主口令来源优先级与 `master.pass` 折中：mac-system-toolkit `references/secret-encryption.md`（权威实现，本文不复制）。
+- 主口令来源优先级与 `master.pass` 折中由 mac-system-toolkit 的加解密能力提供（本文不复制）。
 - AI/agent 不应持久持有用户秘密、用后即弃：见 [ai-agent-credentials.md](ai-agent-credentials.md) 及其来源。
 - 仅当用户主动想加强个人账户时再参考：NIST SP 800-63B https://pages.nist.gov/800-63-4/sp800-63b.html 、EFF Diceware https://www.eff.org/dice ；Microsoft Authenticator 能力边界 https://support.microsoft.com/en-US/authenticator/changes-to-microsoft-authenticator-autofill

@@ -75,7 +75,7 @@ ssh-add -l                                                   # 只列指纹，�
 ```
 
 - agent/钥匙串持有解锁后的私钥，主口令/passphrase 不进对话、不进脚本；
-- 远程机若 agent 未运行，按 dual-machine-manager `security-and-git.md` 的 SOP 启动。
+- 远程机若 agent 未运行，交给双机运维能力（dual-machine-manager）处理。
 
 ### 4.3 `sudo` / 系统级命令
 
@@ -90,7 +90,7 @@ API_KEY="$(BAIDU_ENC_PASS="${BAIDU_ENC_PASS:-$ENC_PASS}" \
   secrets json ".secrets/platform.enc" api_key)"   # JSON 密文可取单字段
 ```
 
-- 参考范式：mac-system-toolkit `secret-encryption.md` 的 Bash/Python 取密段；
+- Bash/Python 取密范式由 mac-system-toolkit 的加解密能力提供；
 - 脚本不内置主口令；专用变量（如 `BAIDU_ENC_PASS`）与通用 `ENC_PASS` 兼容。
 
 ### 4.5 二段因子（TOTP）
@@ -100,7 +100,7 @@ API_KEY="$(BAIDU_ENC_PASS="${BAIDU_ENC_PASS:-$ENC_PASS}" \
 
 ### 4.6 浏览器/登录态自动化
 
-- Playwright/Puppeteer 的 storage-state、cookie 属会话凭证：存仓库外临时位置、用后删、不进公开仓；复用日常登录态优先走 CDP 连接已开浏览器（见 mac-system-toolkit Chrome 控制文档），而不是把账号密码塞进脚本。
+- Playwright/Puppeteer 的 storage-state、cookie 属会话凭证：存仓库外临时位置、用后删、不进公开仓；复用日常登录态优先用浏览器控制能力走 CDP 连接已开浏览器，而不是把账号密码塞进脚本。
 
 ## 五、非交互/无人值守
 
@@ -128,4 +128,4 @@ API_KEY="$(BAIDU_ENC_PASS="${BAIDU_ENC_PASS:-$ENC_PASS}" \
 - Uniclaw：环境变量是传输层不是存储层 https://uniclaw.ai/blog/ai-agent-secrets-management-api-keys
 - Flavio Copes：agent 用秘密引用而不见值 https://flaviocopes.com/ai-agent-passwords/
 - 恶意依赖 harvest `.env`/环境变量/SSH key 的案例 https://dev.to/webofmike/your-ai-agent-should-not-hold-the-llm-api-key-4j3c
-- 加解密命令与三级回退权威实现：mac-system-toolkit `references/secret-encryption.md`
+- 加解密命令与三级回退由 mac-system-toolkit 的加解密能力提供

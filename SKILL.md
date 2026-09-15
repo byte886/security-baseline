@@ -25,8 +25,8 @@ compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因�
 | 层 | 角色 | 由谁负责 |
 |---|---|---|
 | **策略 / 总纲（脑）** | 什么算敏感、怎么分级、凭证从哪来、红线、检查清单、出事怎么办 | **本技能** |
-| **机制 / 工具（手）** | 怎么加密解密、怎么扫明文泄漏、怎么开关代理 | mac-system-toolkit（`secrets.sh` / `audit-secrets.sh` / `vpn-control.md`），本技能只给指针 |
-| **资产 / 台账（账）** | 两台机器具体有哪些凭证、落点路径、账号现状 | dual-machine-manager（`credentials.md` / `security-and-git.md`） |
+| **机制 / 工具（手）** | 怎么加密解密、怎么扫明文泄漏、怎么开关代理 | mac-system-toolkit（加解密 / 明文巡检 / 代理开关等执行能力），本技能只声明能力依赖、不写其内部路径 |
+| **资产 / 台账（账）** | 两台机器具体有哪些凭证、落点路径、账号现状 | dual-machine-manager（双机凭证与账号台账能力） |
 
 ## 核心心智模型（5 条，先建立再动手）
 
@@ -70,7 +70,7 @@ compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因�
 
 ## 与其它技能的关系 / 边界
 
-- **vs mac-system-toolkit**：本技能定"规矩与决策"，它提供"工具实现"（`secrets` 加解密、`audit-secrets.sh` 巡检、`vpn-control.md` 代理开关）。不复制脚本，只放指针（DRY）。
+- **vs mac-system-toolkit**：本技能定"规矩与决策"，它提供"工具实现"（加解密、明文巡检、代理开关等执行能力，对外是 `secrets`、`audit-secrets.sh` 这类稳定命令接口）。不复制实现，只声明能力依赖（DRY）。
 - **vs dual-machine-manager**：它是"两台机器的凭证/账号台账与运维 SOP"，遵循本技能规范；本技能不绑定具体机器、不记某台机的凭证值。
 - **vs project-manager**：同属全局横切治理。项目立项时按本技能规划该项目 `.secrets` 结构与密钥责任，退役时把"凭证吊销/轮换"纳入关闭清单。
 - 业务技能内自带的"安全红线"由各自维护，本技能不替代。
@@ -85,6 +85,6 @@ compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因�
 ## 来源（权威依据，链接见各 reference 末尾）
 
 - AI/agent 密钥管理（密钥不进上下文、执行层取值、环境变量只是传输层）：Auth0 / WorkOS 等。
-- 加解密约定：mac-system-toolkit `secret-encryption.md`（AES-256-CBC + PBKDF2）。
+- 加解密约定由 mac-system-toolkit 的加解密能力提供（AES-256-CBC + PBKDF2）。
 - GitHub Docs：secret scanning / push protection / preventing data leaks；gitleaks。
 - OWASP Secrets / Password Storage Cheat Sheet；NIST SP 800-63B（主口令相关，仅在用户主动加强时参考）。

@@ -2,7 +2,7 @@
 
 > 回答两个问题：**①开发/AI 要用的这个东西算哪类凭证？②它该存哪、从哪取？**
 > 管理对象是**开发与自动化要消费的凭证**（PAT、API key、SSH 私钥、项目密码等）；用户个人各网站登录密码不在本技能收集/管理范围（见 [master-passphrase.md](master-passphrase.md)）。
-> 配套：取密 SOP 与不泄漏纪律见 [ai-agent-credentials.md](ai-agent-credentials.md)；不进 git 见 [repo-and-leak-defense.md](repo-and-leak-defense.md)；加解密命令用法见 mac-system-toolkit `secret-encryption.md`（本文不复制）。
+> 配套：取密 SOP 与不泄漏纪律见 [ai-agent-credentials.md](ai-agent-credentials.md)；不进 git 见 [repo-and-leak-defense.md](repo-and-leak-defense.md)；加解密命令用法属 mac-system-toolkit 的加解密能力（本文不复制）。
 
 ## 目录
 - [一、总原则：每个开发凭证都有确定的加密来处](#一总原则每个开发凭证都有确定的加密来处)
@@ -103,7 +103,7 @@ unset TOKEN
 | 2FA 登录 | TOTP 6 位码 | 用户 Microsoft Authenticator | 当次向用户要，用后即弃 |
 | 浏览器自动化登录态 | storage-state/cookie | 临时文件、用后删、不进公开仓 | 见对应技能，按⑤对待 |
 
-> 双机具体有哪些凭证、路径与账号现状（含 GitHub 账号、SSH 别名、各 `.enc` 清单）查 dual-machine-manager 的 `credentials.md` / `security-and-git.md`，本技能不记具体值。
+> 双机具体有哪些凭证、路径与账号现状（含 GitHub 账号、SSH 别名、各 `.enc` 清单）由 dual-machine-manager 的台账能力提供，本技能不记具体值。
 
 ## 六、要不要给 agent 装"密码管理器"
 
@@ -123,7 +123,7 @@ unset TOKEN
 
 ## 八、来源
 
-- 加解密两级落点与 `.gitignore` 规范：mac-system-toolkit `references/secret-encryption.md`（权威实现）。
+- 加解密两级落点与 `.gitignore` 规范由 mac-system-toolkit 的加解密能力提供。
 - AI/agent 凭证取用与"环境变量是传输层"：[ai-agent-credentials.md](ai-agent-credentials.md) 及其来源（Auth0 / WorkOS 等）。
 - OWASP Secrets Management Cheat Sheet：https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html
 - GitHub 防泄漏：https://docs.github.com/en/code-security/tutorials/secure-your-organization/prevent-data-leaks

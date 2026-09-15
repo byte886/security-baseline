@@ -1,7 +1,7 @@
 # 网络、VPN / 代理的安全使用与 Agent 指针
 
 > 回答：**什么时候该挂代理、端口怎么定、怎么验证通没通、走代理时有哪些安全边界？**
-> 代理的**具体开关操作**（菜单栏客户端交互、端口探测脚本、git/brew 走代理）在 mac-system-toolkit 的 `vpn-control.md`，本文只讲"何时用、怎么判断、安全注意"，不复制操作步骤。
+> 代理的**具体开关操作**（菜单栏客户端交互、端口探测、git/brew 走代理）是 mac-system-toolkit 的代理能力，本文只讲"何时用、怎么判断、安全注意"，不复制操作步骤。
 
 ## 目录
 - [一、总原则：以连通性为准，不硬等不可达资源](#一总原则以连通性为准不硬等不可达资源)
@@ -38,12 +38,12 @@ unset https_proxy http_proxy all_proxy
 ```
 
 - 只影响**当前 shell 会话**，不开全局，最干净；需要长期可写进专用 alias/函数按需启用，不默认全开。
-- `git`/`gh`/`brew`/`npm` 等是否跟随上述变量各有差异，具体配置走 mac-system-toolkit `vpn-control.md`；主仓实际统一走 SSH（`ssh.github.com:443`），不依赖 HTTP 代理。
+- `git`/`gh`/`brew`/`npm` 等是否跟随上述变量各有差异，具体配置交给 mac-system-toolkit 的代理能力；主仓实际统一走 SSH（`ssh.github.com:443`），不依赖 HTTP 代理。
 
 ## 三、端口不写死，先探测
 
 - 不同客户端默认端口不同（如 ClashX 常见 7890、Clash Verge 常见 7897），且可能被改过；**双机环境下两台机器装的客户端还可能不一样（一台 ClashX、一台 Clash Verge），端口随之不同**。
-- **禁止把某个端口写死进脚本/文档当事实**，也不能拿文档或台账里的旧端口替代现场探测：每次先探测当前客户端的 `mixed-port`/`http-port`/`socks-port`（探测与切换动作见 mac-system-toolkit `vpn-control.md`）。
+- **禁止把某个端口写死进脚本/文档当事实**，也不能拿文档或台账里的旧端口替代现场探测：每次先探测当前客户端的 `mixed-port`/`http-port`/`socks-port`（探测与切换是 mac-system-toolkit 的代理能力）。
 - "哪台机装了什么客户端、常态端口多少"属资产台账，记在 dual-machine-manager；台账只用于快速预判，真正使用仍以当场探测结果为准。
 
 ## 四、走代理/VPN 的安全边界
@@ -72,13 +72,13 @@ unset https_proxy http_proxy all_proxy
      └─ 直接用国内渠道，不必为"用 Google"而强行挂代理
 ```
 
-- 代理的开/关、端口探测、菜单栏操作等**动作层**统一交给 mac-system-toolkit（`vpn-control.md`、`cu-plane-guide.md`）；本技能只决定"该不该用、用的时候注意什么"。
+- 代理的开/关、端口探测、菜单栏操作等**动作层**统一交给 mac-system-toolkit 的代理与桌面控制能力；本技能只决定"该不该用、用的时候注意什么"。
 - 两台机器各自的代理客户端、端口等**台账事实**记在 dual-machine-manager，不在此固化。
 
 ## 六、常见问题
 
 - **Q：导出了环境变量为什么 git 还是慢/不通？**
-  A：主仓走 SSH（443），不看 `http(s)_proxy`；确需让某工具走代理，按该工具自身代理配置处理，详见 `vpn-control.md`。
+  A：主仓走 SSH（443），不看 `http(s)_proxy`；确需让某工具走代理，按该工具自身代理配置处理（用 mac-system-toolkit 代理能力）。
 - **Q：怎么确认代理真的生效而不是"假通"？**
   A：对比挂代理前后的出口 IP（第二节命令）；出口 IP/地区变化才说明生效。
 - **Q：挂了代理是不是就能安全地传 token？**
@@ -91,4 +91,4 @@ unset https_proxy http_proxy all_proxy
 - CISA：公共 Wi-Fi 与 VPN 安全建议 https://www.cisa.gov/news-events/news/using-public-wi-fi-safely
 - EFF：如何选择可信 VPN https://ssd.eff.org/module/your-security-plan
 - 代理环境变量约定（`http_proxy/https_proxy/all_proxy`）与 curl：https://curl.se/docs/manual.html
-- 端口探测与本机代理操作：mac-system-toolkit `references/vpn-control.md`（本体系内部权威操作文档）
+- 端口探测与本机代理操作由 mac-system-toolkit 的代理能力提供

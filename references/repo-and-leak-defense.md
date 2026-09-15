@@ -1,7 +1,7 @@
 # 公开仓防泄漏、应急响应与交付前检查
 
 > 回答：**这个能不能提交/推送/公开？怎么防止手滑把密钥发出去？已经发出去了先做什么？对外材料怎么打码？**
-> 配套：凭证该存哪见 [credential-storage.md](credential-storage.md)；加解密工具见 mac-system-toolkit `secret-encryption.md`、明文巡检见其 `audit-secrets.sh`。
+> 配套：凭证该存哪见 [credential-storage.md](credential-storage.md)；加解密与明文巡检由 mac-system-toolkit 对应能力提供（巡检命令 `audit-secrets.sh`）。
 
 ## 目录
 - [一、为什么公开仓要当"全世界实时可见"对待](#一为什么公开仓要当全世界实时可见对待)
@@ -61,7 +61,7 @@ gitleaks protect --verbose --redact --staged     # 扫暂存区，命中即阻�
 # chmod +x .git/hooks/pre-commit
 ```
 
-- 本体系已有轻量自研巡检 `mac-system-toolkit/scripts/audit-secrets.sh`（扫 HEAD 快照/工作区，退出码 0 干净 / 1 待确认 / 2 高置信），可先用它；要工业级规则覆盖（几百种已知 token 形态）再上 gitleaks。
+- 本体系已有轻量自研巡检命令 `audit-secrets.sh`（由 mac-system-toolkit 提供；扫 HEAD 快照/工作区，退出码 0 干净 / 1 待确认 / 2 高置信），可先用它；要工业级规则覆盖（几百种已知 token 形态）再上 gitleaks。
 - 紧急情况确需跳过：`SKIP=gitleaks git commit`（仅限已确认是假阳性，别养成习惯）。
 
 ### L3：GitHub 服务端
