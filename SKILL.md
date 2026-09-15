@@ -1,12 +1,12 @@
 ---
 name: security-baseline
-description: 个人/小团队 AI 工作的安全基线与凭证治理横切技能，跨所有业务项目与两台 Mac 全局生效，是和 project-manager 平级的全局治理能力。覆盖：①凭证分级与"到底存哪里"决策——人脑只记一个主口令、密码管理器管网站/App 密码、加密 .enc 管开发者 token/密钥、macOS 钥匙串与 SSH agent 分工；②人因密码管理——记忆力不好时如何只记一句"够长又顺口"的主口令（Diceware/中文口令短语、强度与词数、离线备份、更换路线、密码管理器选型 Bitwarden/KeePassXC/iCloud 钥匙串）；③公开仓防泄漏分层防御（明文不入库、.gitignore/.enc、pre-commit gitleaks、GitHub push protection、误提交与泄漏应急响应=先轮换再清历史、交付前安全检查清单、对外打码脱敏、最小权限）；④网络与 VPN/代理的安全使用与 Agent 操作指针。当用户提到"密码怎么存/记不住密码/主密码/主口令/passphrase、API key/token/secret/私钥/凭证放哪、密码管理器/1Password/Bitwarden/KeePass/钥匙串、这个能不能提交 git/公开仓、.env/.enc/密钥泄漏/误提交、token 轮换、脱敏打码、最小权限、交付前安全检查、VPN/代理能不能用、外网访问安全、安全基线/安全规范"等任何安全与凭证相关需求时使用。纯方法论与规范，不含可执行脚本：加解密/明文巡检复用 mac-system-toolkit，双机具体凭证台账在 dual-machine-manager。
+description: 个人/小团队 AI 工作的安全基线与凭证治理横切技能，跨所有业务项目与两台 Mac 全局生效，是和 project-manager 平级的全局治理能力。覆盖：①凭证分级与"到底存哪里"决策——优先 passkey/生物识别消除记忆，本地只记一句解锁口令、密码管理器管网站密码、加密 .enc 管开发者 token、macOS 钥匙串与 SSH agent 分工，人的密码与 AI agent 密钥分轨；②弱记忆友好的人因密码管理——记不住复杂口令、不想用纸备份时，用 passkey 通行密钥/生物识别自动填充把"要记要输"降到最低、本地口令取"记得住的中等强度"、数字冗余代替纸质备份、密码管理器与 Microsoft Authenticator 分工、迁移与更换路线；③AI/agent 凭证治理——密钥不进模型上下文、agent 只持引用、执行层从加密库取后即弃、环境变量只是传输层；④公开仓防泄漏分层防御（明文不入库、.gitignore/.enc、pre-commit gitleaks、GitHub push protection、误提交与泄漏应急=先轮换再清历史、交付前安全清单、打码脱敏、最小权限）；⑤网络与 VPN/代理的安全使用与 Agent 操作指针。当用户提到"密码怎么存/记不住密码/嫌密码难输、主密码/主口令/passphrase、passkey/通行密钥/无密码登录、指纹/面容/生物识别解锁、Microsoft Authenticator/验证码/TOTP、密码管理器/1Password/Bitwarden/KeePass/钥匙串/Google 密码管理器、AI agent 密钥/LLM 密钥/自动化怎么取密钥/.env 怎么处理、API key/token/secret/私钥/凭证放哪、这个能不能提交 git/公开仓、.enc/密钥泄漏/误提交、token 轮换、脱敏打码、最小权限、交付前安全检查、VPN/代理能不能用、安全基线/安全规范"等任何安全与凭证相关需求时使用。纯方法论与规范，不含可执行脚本：加解密/明文巡检复用 mac-system-toolkit，双机具体凭证台账在 dual-machine-manager。
 compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因此 Windows/macOS/Linux 三平台通用、无需 uname 判平台、无平台适配缺口；正文示例命令（secrets、~/.doubao/secrets、代理端口）以 macOS 双机现状为例，实际加解密/巡检/代理动作由 mac-system-toolkit 等工具技能按其各自的平台标注落地。
 ---
 
 # security-baseline · 安全基线与凭证治理
 
-> 一句话：**让"安全"成为不用每次重新判断的默认基线——什么是敏感信息、它该存哪、能不能进 git / 发出去、出事了先做什么。**
+> 一句话：**让"安全"成为不用每次重新判断的默认基线——什么是敏感信息、它该存哪、能不能进 git / 发出去、人和 AI 各自怎么用密钥、出事了先做什么。**
 
 ## 平台适用（执行前先读）
 
@@ -24,38 +24,39 @@ compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因�
 
 ## 核心心智模型（5 条，先建立再动手）
 
-1. **区分"人记的"和"机器存的"**：人只记 **1 个主口令**；其余全部交给工具（密码管理器 / 加密库 / 钥匙串），绝不靠脑子记多个、也不重复使用同一弱口令。
-2. **位置优先于值**：文档、仓库、聊天只记"凭证叫什么、在哪、怎么取"，**永远不记值本身**。
+1. **先消除"要记/要输"，再区分"人记的"和"机器存的"**：在线账户优先 passkey/生物识别，不支持的交密码管理器随机密码+自动填充；人只记**本地解锁层一句口令**，开发者密钥交加密库、AI 走执行层取密；绝不用一个弱口令走天下，也不要求人背难输的强口令。
+2. **位置优先于值**：文档、仓库、聊天只记"凭证叫什么、在哪、怎么取"，**永远不记值本身**；AI 对话里尤其只出现引用、不出现明文密钥。
 3. **默认不落盘；要落盘必加密；明文绝不进 git**：能不存就不存；必须存就加密；公开仓里出现明文密钥即视同泄漏。
-4. **最小暴露 + 最小权限**：对外材料、日志、截图、交付物一律打码；token 只授予任务所需权限（长期自动化的主控 token 例外，可按需要求全权限但必须加密保管、不外露）。
+4. **最小暴露 + 最小权限**：对外材料、日志、截图、交付物一律打码；token 默认授予任务所需最小权限与有效期，长期自动化主控 token 若有意放宽，必须加密保管、不外露、泄漏即轮换。
 5. **一旦进了公开历史，先轮换、再清历史**：删除提交 / 重写历史**不能**让已经暴露的凭证失效，轮换/吊销才是真补救。
 
 ## 凭证分级与"存哪"：30 秒决策
 
 | 凭证类型 | 例子 | 存哪 / 谁记 | 人要不要背 |
 |---|---|---|---|
-| **唯一主口令** | 解锁 Mac、密码管理器、`.enc` 库、SSH 私钥 | 人脑 + 一张离线纸备份 | **只背这一个** |
-| 网站 / App 登录密码 | 各网站、SaaS、社区账号 | 密码管理器随机生成、自动填 | 不背 |
-| 开发者密钥 / token | GitHub PAT、API key、webhook、数据库连接串 | 加密 `.enc`（全局 `~/.doubao/secrets` 或项目 `.secrets`），用时解密 | 不背 |
-| SSH / 签名私钥 | `~/.ssh/id_*`、GPG key | `~/.ssh` + ssh-agent / 钥匙串，私钥本身加 passphrase | passphrase 即主口令 |
+| **本地解锁口令（唯一要记）** | Mac/sudo、密码管理器主密码、`.enc` 库、SSH 私钥 | 人脑（记得住的中等强度）+ 数字冗余备份，不用纸 | **只记这一句** |
+| 网站 / App 登录 | 各网站、SaaS、邮箱、社区 | **优先 passkey**（指纹/扫码）；否则管理器随机密码+生物识别自动填 | 不记、不输 |
+| 开发者 / AI agent 密钥 | GitHub PAT、API key、webhook、连接串 | 加密 `.enc`（全局 `~/.doubao/secrets` 或项目 `.secrets`），执行层用时解密、**不进 AI 对话** | 不背 |
+| SSH / 签名私钥 | `~/.ssh/id_*`、GPG key | `~/.ssh` + ssh-agent / 钥匙串，私钥加 passphrase | passphrase 即本地那句 |
 | 一次性 / 会话凭证 | session、cookie、短期 token、Playwright 配对码 | 内存 / 临时文件，过期即弃、不落盘 | 不背 |
-| 他人 / 客户敏感数据 | 客户资料、私域数据、身份证/手机 | 最小留存、加密、不进对外交付与公开仓 | 不背 |
+| 他人 / 客户敏感数据 | 客户资料、私域数据、证件号 | 最小留存、加密、不进对外交付与公开仓 | 不背 |
 
-> 分级细节、"全局 vs 项目"落点判断、密码管理器怎么选：见 [references/credential-storage.md](references/credential-storage.md)。
+> 分级细节、"全局 vs 项目"落点、密码管理器/passkey 怎么选见 [references/credential-storage.md](references/credential-storage.md)；AI/agent 取密纪律见 [references/ai-agent-credentials.md](references/ai-agent-credentials.md)。
 
 ## 按需加载索引（不要一次全读）
 
 | 你要做什么 | 读这篇 |
 |---|---|
-| 判断某类凭证存哪、全局还是项目、密码管理器选哪个 | [credential-storage.md](references/credential-storage.md) |
-| 记不住复杂密码、想把主口令设得又强又好记、多久换、怎么备份 | [master-passphrase.md](references/master-passphrase.md) |
+| 判断某类凭证存哪、全局还是项目、passkey/密码管理器怎么选 | [credential-storage.md](references/credential-storage.md) |
+| 记不住/嫌难输复杂密码、想少记少输、passkey 怎么开、本地口令设多强、不用纸怎么防遗忘、怎么迁移 | [master-passphrase.md](references/master-passphrase.md) |
+| AI/agent 要用密钥、怕密钥被模型泄漏、`.env` 怎么处理、自动化如何免输口令 | [ai-agent-credentials.md](references/ai-agent-credentials.md) |
 | 判断能不能提交公开仓、怎么防误提交、已经泄漏/误提交怎么办、交付前自查、怎么打码 | [repo-and-leak-defense.md](references/repo-and-leak-defense.md) |
 | 什么时候该开 VPN/代理、端口怎么定、敏感信息能不能走外网或代理 | [network-and-vpn.md](references/network-and-vpn.md) |
 
 ## 硬红线（任何任务都适用）
 
-1. 明文密码 / token / 私钥 / 连接串：**不进 git、不写进脚本常量、不长期留在命令历史、不进日志/截图/对外文档/聊天**；示例一律用占位符（`<主口令>`、`ghp_xxxx…后4位`）。
-2. 加解密统一走 `secrets`（mac-system-toolkit），固定算法 `aes-256-cbc + pbkdf2 + base64` 不改；主口令只来自 `ENC_PASS` / 交互输入 / 本机 600 权限 `master.pass`，**不硬编码、不猜测，用户没给就问**。
+1. 明文密码 / token / 私钥 / 连接串：**不进 git、不写进脚本常量、不长期留在命令历史、不进日志/截图/对外文档/聊天与 AI 对话上下文**；示例一律用占位符（`<本地口令>`、`ghp_xxxx…后4位`）。
+2. 加解密统一走 `secrets`（mac-system-toolkit），固定算法 `aes-256-cbc + pbkdf2 + base64` 不改；本地口令只来自 `ENC_PASS` / 交互输入 / 本机 600 权限 `master.pass`，**不硬编码、不猜测，用户没给就问**。
 3. 任何要进公开仓的交付，提交前过 [repo-and-leak-defense.md](references/repo-and-leak-defense.md) 的"交付前安全清单"。
 4. 对外分享 / 汇报 / 截图先打码；拿不准一串字符是不是敏感，**先按敏感处理**。
 5. 怀疑泄漏：顺序固定为 **先让凭证失效（轮换 / 吊销）→ 再排查影响面 → 最后清理历史与加固**，不可颠倒。
@@ -75,6 +76,8 @@ compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因�
 
 ## 来源（权威依据，链接见各 reference 末尾）
 
-- EFF Diceware（主口令词数与好记强度）；NIST SP 800-63B（memorized secret 长度/熵）；OWASP Password Storage Cheat Sheet / ASVS。
+- passkey / FIDO2（Google、Microsoft）与 Microsoft Authenticator 能力变更；弱记忆友好的生物识别解锁实践。
+- AI/agent 密钥管理（Auth0、WorkOS 等：密钥不进上下文、执行层取值、环境变量只是传输层）。
+- EFF Diceware、NIST SP 800-63B（何时需要更强主口令）；OWASP Password Storage Cheat Sheet / ASVS。
 - GitHub Docs：secret scanning / push protection / preventing data leaks；gitleaks（pre-commit 与历史扫描）。
-- 2026 年密码管理器横向评测（Bitwarden / KeePassXC / iCloud 钥匙串 / 1Password）。
+- 2026 年密码管理器横向评测（Bitwarden / KeePassXC / iCloud 钥匙串 / 1Password / Google 密码管理器）。
