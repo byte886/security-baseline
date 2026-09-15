@@ -1,6 +1,8 @@
 # security-baseline
 
-个人 / 小团队 AI 工作的**安全基线与凭证治理**横切技能：凭证分级与"存哪里"决策、记忆力有限时的人因主口令方案、公开仓防泄漏与密钥泄漏应急、VPN/代理的安全使用。与 project-manager 平级，跨所有业务项目与机器全局生效；纯方法论，不含脚本（加解密/巡检复用 mac-system-toolkit，双机凭证台账在 dual-machine-manager）。
+个人 AI 开发工作的**安全基线与凭证"来处"治理**横切技能：开发/AI 工具（gh、ssh-agent、sudo、脚本、第三方 API）要用密码或 key 时，确定它从哪个加密来处取、怎么取才不暴露用户主口令；主口令只在交互时由用户当次提供、用后即弃，二段因子走 Microsoft Authenticator；另含公开仓防泄漏与密钥泄漏应急、VPN/代理安全使用。与 project-manager 平级，跨所有业务项目与机器全局生效；纯方法论，不含脚本（加解密/巡检复用 mac-system-toolkit，双机凭证台账在 dual-machine-manager）。
+
+> 边界：本技能面向**开发/AI 侧凭证**，不改造、不收集用户个人各网站登录密码，也不主动给用户安装个人密码管理器。
 
 ## 使用
 
@@ -8,9 +10,10 @@
 
 ## 目录
 
-- `SKILL.md`：安全心智模型、凭证分级与 30 秒决策、硬红线、按需加载索引、与其它技能边界
-- `references/credential-storage.md`：五类凭证与存放位置、全局/项目 `.enc`、密码管理器选型
-- `references/master-passphrase.md`：唯一主口令怎么造得又强又好记、离线备份、迁移与更换
+- `SKILL.md`：安全心智模型、开发场景 30 秒决策（凭证来处 + 用户配合）、硬红线、按需加载索引、与其它技能边界
+- `references/ai-agent-credentials.md`：**操作核心**——AI/开发工具取密 SOP（gh/ssh-agent/sudo/脚本标准取法、秘密不进上下文、取—用—弃、交付前自检）
+- `references/credential-storage.md`：开发凭证分类与加密落点、全局/项目 `.enc`、典型工具凭证来处对照、何时才需要 agent-side 密钥库
+- `references/master-passphrase.md`：主口令怎么向用户取得、怎么用后不残留、2FA/TOTP 怎么配合、非交互 master.pass 的启用条件
 - `references/repo-and-leak-defense.md`：公开仓五道防线、泄漏应急（先轮换）、打码脱敏、交付前清单
 - `references/network-and-vpn.md`：代理连通性判断、临时走代理、VPN 安全边界与 Agent 检索渠道决策
 
