@@ -14,7 +14,8 @@
 - `references/ai-agent-credentials.md`：**操作核心**——AI/开发工具取密 SOP（gh/ssh-agent/sudo/脚本标准取法、秘密不进上下文、取—用—弃、交付前自检）
 - `references/credential-storage.md`：开发凭证分类与加密落点、全局/项目 `.enc`、典型工具凭证来处对照、何时才需要 agent-side 密钥库
 - `references/master-passphrase.md`：主口令怎么向用户取得、怎么用后不残留、2FA/TOTP 怎么配合、非交互 master.pass 的启用条件
-- `references/repo-and-leak-defense.md`：公开仓五道防线、泄漏应急（先轮换）、打码脱敏、交付前清单
+- `references/repo-and-leak-defense.md`：公开仓为何"全世界可见"、分层五道闸、`.enc` 能否进仓
+- `references/leak-response-redaction-checklist.md`：泄漏应急（先轮换）、对外打码脱敏、最小权限权衡、交付前安全清单
 - `references/network-and-vpn.md`：代理连通性判断、临时走代理、VPN 安全边界与 Agent 检索渠道决策
 
 ## 许可

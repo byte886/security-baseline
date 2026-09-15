@@ -1,7 +1,7 @@
 ---
 name: security-baseline
-description: 个人 AI 开发工作的安全基线与凭证"来处"治理横切技能，跨所有业务项目与两台 Mac 全局生效，与 project-manager 平级。核心定位：当开发过程或 AI agent 使用 gh、git/ssh-agent、sudo、脚本、第三方平台 API 时需要密码/token/私钥/2FA，来这里确定"凭证从哪个加密来处取、怎么取才不泄漏用户主口令"。约定：①用户本人的网站/登录密码习惯保持现状、本技能不改造、不索要、不记录；用户只在交互时提供一次本地主口令（口述/输入，当次内存使用），或用 Microsoft Authenticator 提供二段因子 TOTP；②一切开发/自动化凭证都有加密来处（全局/项目 .enc、macOS 钥匙串、ssh-agent），直接或间接都不暴露主口令明文，也不把目标凭证明文留在仓库/对话/日志/命令历史；③凭证分级与全局 vs 项目落点、加解密统一走 mac-system-toolkit 的 secrets（aes-256-cbc+pbkdf2）；④公开仓防泄漏（明文不入库、.gitignore/.enc、gitleaks、push protection、误提交/泄漏先轮换再清历史、交付前清单、打码脱敏、最小权限）；⑤网络与 VPN/代理安全使用指针。当用户提到"gh 登录/token 从哪来、git push/ssh-agent/私钥口令、sudo 密码、脚本或 API 要密码/key/secret、凭证放哪/存哪、.enc 怎么加解密、二段因子/验证码/TOTP/Authenticator 配合、这个能不能提交 git/公开仓、.env/密钥泄漏/误提交、token 轮换、脱敏打码、最小权限、交付前安全检查、VPN/代理、安全基线/凭证来处"等需求时使用。纯方法论与规范，不含可执行脚本：加解密/明文巡检复用 mac-system-toolkit，双机具体凭证台账在 dual-machine-manager。
-compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因此 Windows/macOS/Linux 三平台通用、无需 uname 判平台、无平台适配缺口；正文示例命令（secrets、~/.doubao/secrets、ssh-agent、代理端口）以 macOS 双机现状为例，实际加解密/巡检/代理动作由 mac-system-toolkit 等工具技能按其各自的平台标注落地。
+description: 个人开发工作的安全基线与凭证"来处"横切技能，跨所有项目与两台 Mac 全局生效，与 project-manager 平级。当 gh、git/ssh-agent、sudo、脚本或第三方 API 需要密码/token/私钥/2FA/TOTP，或要问凭证存哪、怎么加密取、.enc 加解密、某凭证能否进公开仓、.env/密钥泄漏或误提交、token 轮换、打码脱敏、最小权限、交付前安全检查、VPN/代理安全时使用。纯方法论不含脚本：加解密/巡检复用 mac-system-toolkit，双机凭证台账在 dual-machine-manager。
+compatibility: 纯方法论与 Markdown，不随附可执行脚本，三平台通用、无需判平台；示例路径以 macOS 双机现状为例，实际加解密/巡检/代理动作由 mac-system-toolkit 等工具技能按各自平台标注落地。
 ---
 
 # security-baseline · 安全基线与凭证来处
@@ -57,14 +57,15 @@ compatibility: 纯方法论与 Markdown 规范，不随附可执行脚本，因�
 | gh/ssh-agent/sudo/脚本要凭证、怎么从加密来处取、怎么不暴露主口令、非交互怎么办 | [ai-agent-credentials.md](references/ai-agent-credentials.md) |
 | 某凭证算哪类、放全局还是项目 `.enc`、怎么加解密、钥匙串/ssh-agent 分工 | [credential-storage.md](references/credential-storage.md) |
 | 主口令怎么向用户要、怎么用后即弃、2FA/TOTP 怎么配合、master.pass 何时可用 | [master-passphrase.md](references/master-passphrase.md) |
-| 能不能提交公开仓、怎么防误提交、已泄漏/误提交怎么办、交付前自查、怎么打码 | [repo-and-leak-defense.md](references/repo-and-leak-defense.md) |
+| 能不能提交公开仓、三道正交维度、三道闸/五道防线怎么搭、`.enc` 能否进仓 | [repo-and-leak-defense.md](references/repo-and-leak-defense.md) |
+| 已误提交/泄漏先做什么、对外怎么打码脱敏、交付前安全清单、最小权限权衡 | [leak-response-redaction-checklist.md](references/leak-response-redaction-checklist.md) |
 | 什么时候开 VPN/代理、端口怎么定、敏感信息能否走外网/代理 | [network-and-vpn.md](references/network-and-vpn.md) |
 
 ## 硬红线（任何任务都适用）
 
 1. 明文主口令 / token / 私钥 / 连接串，以及**真实个人数据与隐私内容**（真实姓名、账号 ID/昵称、群 ID/聊天标识、手机号、个人邮箱、身份证、客户数据、本机 dump 的数据库/数据字典、本人实测日志）：**不进公开 git、不写进脚本常量、不长期留命令历史、不进日志/截图/对外文档/AI 对话**；密钥与个人数据一律占位/掩码（`<主口令>`、`ghp_xxxx…后4位`、`〈主号wxid〉`、虚构人名"张三"）。含个人/本机数据的文件按"**脱敏后明文随仓 / 加密 `.enc` 随仓 / 无价值删除**"三归宿处理，不挪到仓外"私有区"（见 repo-and-leak-defense 第一节）；唯一例外是跨项目根凭证，本就放仓外全局 `~/.doubao/secrets/`。
 2. 加解密统一走 `secrets`（mac-system-toolkit），固定算法 `aes-256-cbc + pbkdf2 + base64` 不改；主口令只来自交互输入 / `ENC_PASS` / 本机 600 权限 `master.pass`，**不硬编码、不猜测，用户没给就问，用完不残留**。
-3. 任何要进公开仓的交付，提交前过 [repo-and-leak-defense.md](references/repo-and-leak-defense.md) 的"交付前安全清单"。
+3. 任何要进公开仓的交付，提交前过 [leak-response-redaction-checklist.md](references/leak-response-redaction-checklist.md) 的"交付前安全清单"。
 4. 对外分享 / 汇报 / 截图先打码；拿不准一串字符是否敏感，**先按敏感处理**。
 5. 怀疑泄漏：顺序固定为 **先轮换/吊销 → 再排查影响面 → 最后清理历史与加固**，不可颠倒。
 
