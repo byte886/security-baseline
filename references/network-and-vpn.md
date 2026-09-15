@@ -42,9 +42,9 @@ unset https_proxy http_proxy all_proxy
 
 ## 三、端口不写死，先探测
 
-- 不同客户端默认端口不同（如 ClashX 常见 7890、Clash Verge 常见 7897），且可能被改过，**禁止把端口硬编码进脚本或文档当成事实**。
-- 每次以"探测本地监听端口 / 读客户端配置"得到当前端口（探测与切换的具体命令见 mac-system-toolkit `vpn-control.md`）。
-- 两台机器、不同客户端的端口可能不同，双机不假设一致。
+- 不同客户端默认端口不同（如 ClashX 常见 7890、Clash Verge 常见 7897），且可能被改过；**双机环境下两台机器装的客户端还可能不一样（一台 ClashX、一台 Clash Verge），端口随之不同**。
+- **禁止把某个端口写死进脚本/文档当事实**，也不能拿文档或台账里的旧端口替代现场探测：每次先探测当前客户端的 `mixed-port`/`http-port`/`socks-port`（探测与切换动作见 mac-system-toolkit `vpn-control.md`）。
+- "哪台机装了什么客户端、常态端口多少"属资产台账，记在 dual-machine-manager；台账只用于快速预判，真正使用仍以当场探测结果为准。
 
 ## 四、走代理/VPN 的安全边界
 
