@@ -16,7 +16,7 @@
 
 ## 一、总原则：网络分流的唯一权威源
 
-> 本节是"访问外部网络该不该挂代理"的**唯一政策源**：全局 AGENTS、其他技能只放指针、动作或实测台账，不复述本原则（多处配置只会改一处漏多处）。分工：**本文**定分流原则；**mac-system-toolkit** 提供探端口/开关/菜单栏等动作；**dual-machine-manager** 记双机客户端与端口台账；**web-research-toolkit** 维护检索通道"哪个域名实测被墙、哪个能直连"的逐通道台账，**multiplatform-media-fetch** 维护媒体平台（YouTube/B站/抖音等）的网络要求。
+> 本节是"访问外部网络该不该挂代理"的**唯一政策源**：全局 AGENTS、其他技能只放指针、动作或实测台账，不复述本原则（多处配置只会改一处漏多处）。分工：**本文**定分流原则；**mac-system-toolkit** 提供探端口/开关/菜单栏等动作；**dual-machine-manager** 记双机客户端与端口台账；**research-toolkit** 维护检索通道"哪个域名实测被墙、哪个能直连"的逐通道台账，**multiplatform-media-fetch** 维护媒体平台（YouTube/B站/抖音等）的网络要求。
 
 按目标分三类处理：
 
@@ -62,7 +62,7 @@ unset https_proxy http_proxy all_proxy
 
 ## 五、AI Agent 的检索渠道决策（指针）
 
-> 分流原则的唯一权威源是本文第一节；本树是它的执行速查。逐通道实测（谁被墙、谁能直连）由 web-research-toolkit 的网络分流台账维护，逐平台（YouTube/B站/抖音等）由 multiplatform-media-fetch 维护。
+> 分流原则的唯一权威源是本文第一节；本树是它的执行速查。逐通道实测（谁被墙、谁能直连）由 research-toolkit 的网络分流台账维护，逐平台（YouTube/B站/抖音等）由 multiplatform-media-fetch 维护。
 
 ```
 要访问外部网络
